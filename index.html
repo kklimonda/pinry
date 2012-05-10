@@ -1,14 +1,217 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="documentup.min.js"></script>
-    <script>
-      DocumentUp.document({
-        repo: "overshard/pinry",
-        name: "Pinry",
-        twitter: ["overshard"],
-      });
-    </script>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pinry by Isaac Bythewood</title>
+    <meta name="description" content="Pinry is a private, self-hosted, Pinterest inspired by Wookmark and built on top of Django.">
+    
+    <link rel="stylesheet" type="text/css" href="http://documentup.com/stylesheets/screen.css">
   </head>
-  <body></body>
+  <body><div id="container">
+  <div id="nav">
+    
+      <div id="header">
+        <a href="#" id="logo">Pinry</a>
+      </div>
+    
+    <ul id="sections">
+      
+        <li>
+          <a href="#why">Why?</a>
+          
+        </li>
+      
+        <li>
+          <a href="#getting-started">Getting Started</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#getting-started/development">Development</a>
+                </li>
+              
+                <li>
+                  <a href="#getting-started/jenkins">Jenkins</a>
+                </li>
+              
+                <li>
+                  <a href="#getting-started/production">Production</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#build-status">Build Status</a>
+          
+        </li>
+      
+        <li>
+          <a href="#roadmap">Roadmap</a>
+          
+        </li>
+      
+        <li>
+          <a href="#as-seen-on">As Seen On</a>
+          
+        </li>
+      
+        <li>
+          <a href="#license-simplified-bsd">License (Simplified BSD)</a>
+          
+        </li>
+      
+    </ul>
+    
+      <div class="extra" id="github">
+        <a href="https://github.com/overshard/pinry">Source on Github</a>
+      </div>
+      
+        <div class="extra" id="github-issues">
+          <a href="https://github.com/overshard/pinry/issues">Issues</a>
+        </div>
+      
+      
+    
+    
+      
+      
+        <div class="extra twitter">
+          <iframe allowtransparency="true" frameborder="0" scrolling="no" style="width:162px; height:20px;" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=overshard&show_count=false"></iframe>
+        </div>
+      
+    
+  </div>
+  <div id="content">
+    
+      <a href="http://github.com/overshard/pinry" id="github-ribbon"><img src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+    
+    <h1><img src="https://github.com/overshard/pinry/raw/master/logo.png" alt="Pinry"></h1>
+<p>Pinry is a private, self-hosted, <a href="http://pinterest.com/">Pinterest</a> inspired by <a href="http://www.wookmark.com/">Wookmark</a> and
+built on top of Django.
+
+</p>
+<p><img src="https://github.com/overshard/pinry/raw/master/screenshot.png" alt="Pinry Screenshot">
+
+
+</p>
+<h2 id='why'>Why?</h2 id='why'>
+<p>Mostly because I don&#39;t like sharing, I use pinup boards for personal inspiration
+boards. Also if I use a public platform like Pinterest or Wookmark then my pins
+run the risk of getting a DMCA take down notice. I might not even be able to
+pin something at all with websites now blocking tools like this. I rather
+bypass all these risks and just host it myself.
+
+
+</p>
+<h2 id='getting-started'>Getting Started</h2 id='getting-started'>
+<p>Pinry has three different customizable configurations:
+
+</p>
+<h3 id='getting-started/development'>Development</h3 id='getting-started/development'>
+<p>Have virtualenv and pip installed. You may also need to have the build
+dependencies for PIL installed.
+
+</p>
+<pre><code><span class="char">$ </span>git clone <span class="method">git:</span>//github.com/overshard/pinry.git
+<span class="char">$ </span>cd pinry
+<span class="char">$ </span>virtualenv .
+<span class="char">$ </span>bin/pip install -r requirements/development.txt
+<span class="char">$ </span>bin/python manage.py syncdb
+<span class="char">$ </span>bin/python manage.py migrate
+<span class="char">$ </span>bin/python manage.py runserver</code></pre>
+<p>Note: If you are on Ubuntu 12.04 there is a bug in PIL that causes it to not
+build in JPG and PNG support. You&#39;ll need to follow all the steps above except
+before <code>virtualenv .</code> run <code>sudo apt-get install python-imaging</code> and instead of
+<code>virtualenv .</code> run <code>virtualenv --system-site-packages .</code>. On older versions of
+Ubuntu and older Linux distributions you&#39;ll need to install PIL dependencies.
+On Ubuntu this can be done with <code>sudo apt-get build-dep python-imaging</code>.
+
+
+</p>
+<h3 id='getting-started/jenkins'>Jenkins</h3 id='getting-started/jenkins'>
+<p>If you want to use Pinry with your own Jenkins server I&#39;ve already setup all of
+the settings on Pinry, just follow the instructions starting at section 3 on the
+official <a href="https://sites.google.com/site/kmmbvnr/home/django-jenkins-tutorial">Django Jenkins Tutorial</a>.
+
+</p>
+<p>A quick tip, when you get to the <code>Add build step -&gt; Execute shell</code> step instead
+of using his example use:
+
+</p>
+<pre><code><span class="title">virtualenv</span> <span class="comment">--system-site-packages .</span>
+<span class="title">bin</span>/pip install -r requirements/jenkins.txt
+<span class="title">bin</span>/python manage.py jenkins <span class="comment">--settings=pinry.settings.jenkins</span></code></pre>
+<p>As noted in development be sure you have PIL installed or it&#39;s build
+dependencies.
+
+</p>
+<h3 id='getting-started/production'>Production</h3 id='getting-started/production'>
+<p>If you want a production server <a href="https://www.google.com/search?q=deploy+django+production">Google around</a> for more information on
+running Django in a production environment and create a
+<code>pinry/settings/production.py</code> file. I don&#39;t cover this because there are
+hundreds of different ways to deploy a Django project and everyone has their own
+preference.
+
+
+</p>
+<h2 id='build-status'>Build Status</h2 id='build-status'>
+<p>For build information on the latest commit head over to my <a href="http://jenkins.bythewood.me/job/pinry/">Jenkins server</a>.
+You&#39;ll get useful information on if all my tests are passing, my test coverage,
+and if I&#39;m conforming with pylint and pep8 standards.
+
+
+</p>
+<h2 id='roadmap'>Roadmap</h2 id='roadmap'>
+<ul>
+<li>Non-image URL pinning</li>
+<li>Bookmarklet</li>
+<li>Tagging, groups, multiple and/or user boards</li>
+<li>Statistics/analytics with pretty graphs</li>
+</ul>
+<h2 id='as-seen-on'>As Seen On</h2 id='as-seen-on'>
+<ul>
+<li><a href="http://www.usatoday.com/tech/products/story/2012-04-27/pinterest-pinry-private-pinning/54584308/1">USA Today</a></li>
+<li><a href="http://news.ycombinator.com/item?id=3895618">Hacker News</a></li>
+<li><a href="http://thenextweb.com/apps/2012/04/27/pinry-is-a-self-hosted-version-of-pinterest-that-gives-you-full-control-of-your-pins/">The Next Web</a></li>
+<li><a href="http://us2.campaign-archive2.com/?u=e2e180baf855ac797ef407fc7&amp;id=1f8c766c90&amp;e=292d864a00">Python Weekly</a></li>
+<li><a href="http://us4.campaign-archive1.com/?u=9735795484d2e4c204da82a29&amp;id=4f9b37c501">Pycoder&#39;s Weekly</a></li>
+</ul>
+<h2 id='license-simplified-bsd'>License (Simplified BSD)</h2 id='license-simplified-bsd'>
+<p>Copyright (c) Isaac Bythewood<br>All rights reserved.
+
+</p>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+</p>
+<ol>
+<li><p>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</p>
+</li>
+<li><p>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</p>
+</li>
+</ol>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+</p>
+
+  </div>
+</div></body>
 </html>
