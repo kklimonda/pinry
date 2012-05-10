@@ -1,112 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
-
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
-
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
+    <script src="documentup.min.js"></script>
+    <script>
+      DocumentUp.document({
+        repo: "overshard/pinry",
+        name: "Pinry",
+        twitter: ["overshard"],
+      });
     </script>
-    <title>Pinry by Isaac Bythewood</title>
   </head>
-
-  <body>
-    <a id="forkme_banner" href="https://github.com/overshard/pinry">Fork Me on GitHub</a>
-    <div class="shell">
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Pinry</h1>
-            <h2>Pinry is a self-hostable Pinterest and Wookmark clone.</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/overshard/pinry/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/overshard/pinry/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-      <span class="banner-fix"></span>
-
-      <section id="main_content">
-        <p><img src="https://github.com/overshard/pinry/raw/master/screenshot.png" alt="Pinry Screenshot"></p>
-
-        <h2>Why?</h2>
-        
-        <p>Because I don't like sharing. I would use these services to store a lot of
-        images and data that isn't necessarily personal but that I don't actually want
-        to share or deal with the possibility of having it taken down by a DMCA notice.
-        My use of Pinterest/Wookmark boils down to having personal board for things I
-        want to remember or keep for inspiration.</p>
-        
-        <h2>Plans</h2>
-        
-        <p>Some features that I want to implement, if you know how to implement them then
-        please do them for me! I'm very pull-request friendly and will not yell at you
-        for bad code, I'll simply work with you to improve it.</p>
-        
-        <ul>
-          <li>Add non-image URL support, take "screenshot" of page as a thumbnail.</li>
-          <li>Create a bookmarklet for quick saving.</li>
-          <li>Manual and automatic tagging via description, image alt tags and whatever else I can scrape.</li>
-          <li>Statistics page with graphs for image views, what times of day have the most posts, etc.</li>
-        </ul>
-        
-        <h2>Getting Started</h2>
-        
-        <p>Have virtualenv and pip installed. You may also need to have the build
-        dependencies for PIL installed. (If you are on Ubuntu you can do this by typing
-        "sudo apt-get build-dep python-imaging".)</p>
-        
-<pre>$ git clone git://github.com/overshard/pinry.git
-$ cd pinry
-$ virtualenv .
-$ bin/pip install -r requirements.txt
-$ bin/python manage.py syncdb
-$ bin/python manage.py migrate
-$ bin/python manage.py runserver
-</pre>
-        
-        <p>Following this will get you a development server up and running. If you want a
-        production server <a href="https://www.google.com/search?q=deploy+django+production">Google around</a> for more information on running Django in a
-        production environment and create a "pinry/settings/production.py" file.</p>
-
-        <h2>Pinry Updates</h2>
-
-        <p>By far the easiest way is to just watch the GitHub repo. You can also
-        follow me on Twitter and I will announce updates there.</p>
-
-        <div align="center">
-            <a href="https://twitter.com/overshard" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @overshard</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/overshard">Isaac Bythewood</a> can be found on <a href="https://github.com/overshard/pinry">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-    </div>
-  </body>
+  <body></body>
 </html>
