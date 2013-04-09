@@ -58,8 +58,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'pinry.core.context_processors.template_settings',
 )
 AUTHENTICATION_BACKENDS = (
-    'pinry.users.auth.backends.CombinedAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
 )
 
 
@@ -86,9 +86,12 @@ INSTALLED_APPS = (
     'taggit',
     'compressor',
     'django_images',
+    'guardian',
     'pinry.core',
     'pinry.users',
 )
+
+ANONYMOUS_USER_ID = 0
 
 IMAGE_PATH = 'pinry.core.utils.upload_path'
 IMAGE_SIZES = {

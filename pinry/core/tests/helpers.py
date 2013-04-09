@@ -1,10 +1,11 @@
-from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.core.files.images import ImageFile
 from django.db.models.query import QuerySet
 from django.test import TestCase
 
 import factory
+
+from guardian.shortcuts import assign
 from taggit.models import Tag
 
 from ..models import Pin, Image
@@ -37,8 +38,16 @@ class ImageFactory(factory.Factory):
 
 
 class PinFactory(factory.Factory):
+    FACTORY_FOR = Pin
+
     submitter = factory.SubFactory(UserFactory)
     image = factory.SubFactory(ImageFactory)
+    url = factory.Sequence(lambda n: 'http://testserver/mocked/{}.jpg'.format(n))
+
+    @factory.post_generation
+    def set_permissions(self, create, extracted, **kwargs):
+        for perm in ['change_pin', 'delete_pin']:
+            assign(perm, self.submitter, self)
 
     @factory.post_generation(extract_prefix='tags')
     def add_tags(self, create, extracted, **kwargs):

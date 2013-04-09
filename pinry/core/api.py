@@ -1,3 +1,4 @@
+from guardian.shortcuts import assign
 from tastypie import fields
 from tastypie.authorization import DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
@@ -122,6 +123,12 @@ class PinResource(ModelResource):
         if filters and 'tag' in filters:
             orm_filters['tags__name__in'] = filters['tag'].split(',')
         return orm_filters
+
+    def obj_create(self, bundle, **kwargs):
+        obj = super(PinResource, self).obj_create(bundle, **kwargs)
+        for perm in ['delete_pin', 'change_pin']:
+            assign(perm, bundle.request.user, bundle.obj)
+        return obj
 
     def save_m2m(self, bundle):
         tags = bundle.data.get('tags', None)

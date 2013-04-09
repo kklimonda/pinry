@@ -22,7 +22,8 @@ install_requires = [
     'django_compressor',
     'requests',
     'django-images',
-    'django-taggit'
+    'django-taggit',
+    'django-guardian>=1.1.0.dev',
 ]
 
 setup(
@@ -41,7 +42,7 @@ setup(
     tests_require=['mock', 'factory-boy'],
     install_requires=install_requires,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable"
         "Framework :: Django",
         "Environment :: Web Environment",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
