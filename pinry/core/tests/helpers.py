@@ -5,14 +5,20 @@ from django.test import TestCase
 
 import factory
 
-from guardian.shortcuts import assign
+from guardian.shortcuts import assign_perm
 from taggit.models import Tag
 
-from ..models import Pin, Image
+from ..models import Board, Pin, Image
 from ...users.models import User
 
 
 TEST_IMAGE_PATH = 'logo.png'
+
+
+class BoardFactory(factory.Factory):
+    FACTORY_FOR = Board
+
+    name = factory.Sequence(lambda n: 'Test board #{}'.format(n))
 
 
 class UserFactory(factory.Factory):
@@ -43,11 +49,12 @@ class PinFactory(factory.Factory):
     submitter = factory.SubFactory(UserFactory)
     image = factory.SubFactory(ImageFactory)
     url = factory.Sequence(lambda n: 'http://testserver/mocked/{}.jpg'.format(n))
+    board = factory.SubFactory(BoardFactory)
 
     @factory.post_generation
     def set_permissions(self, create, extracted, **kwargs):
         for perm in ['change_pin', 'delete_pin']:
-            assign(perm, self.submitter, self)
+            assign_perm(perm, self.submitter, self)
 
     @factory.post_generation(extract_prefix='tags')
     def add_tags(self, create, extracted, **kwargs):

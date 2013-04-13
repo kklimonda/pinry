@@ -5,12 +5,12 @@ from taggit.models import Tag
 from tastypie.exceptions import Unauthorized
 from tastypie.test import ResourceTestCase
 
-from .helpers import ImageFactory, PinFactory, UserFactory
+from .helpers import ImageFactory, PinFactory, UserFactory, BoardFactory
 from ..models import Pin, Image
 from ...users.models import User
 
 
-__all__ = ['ImageResourceTest', 'PinResourceTest']
+__all__ = ['BoardResourceTest', 'ImageResourceTest', 'PinResourceTest']
 
 
 def filter_generator_for(size):
@@ -22,6 +22,15 @@ def filter_generator_for(size):
 def mock_requests_get(url):
     response = mock.Mock(content=open('logo.png', 'rb').read())
     return response
+
+
+class BoardResourceTest(ResourceTestCase):
+    def test_list_detail(self):
+        response = self.api_client.get('/api/v1/board/')
+        self.assertDictEqual(self.deserialize(response)['objects'][0], {
+            'description': '',
+            'name': 'Default board'
+        })
 
 
 class ImageResourceTest(ResourceTestCase):
@@ -61,6 +70,7 @@ class ImageResourceTest(ResourceTestCase):
 class PinResourceTest(ResourceTestCase):
     def setUp(self):
         super(PinResourceTest, self).setUp()
+        self.board = BoardFactory()
         self.user = UserFactory(password='password')
         self.api_client.client.login(username=self.user.username, password='password')
 
@@ -69,6 +79,7 @@ class PinResourceTest(ResourceTestCase):
         url = 'http://testserver/mocked/logo.png'
         post_data = {
             'submitter': '/api/v1/user/1/',
+            'board': '/api/v1/board/{}/'.format(self.board.pk),
             'url': url,
             'description': 'That\'s an Apple!'
         }
@@ -79,6 +90,7 @@ class PinResourceTest(ResourceTestCase):
 
         # submitter is optional, current user will be used by default
         post_data = {
+            'board': '/api/v1/board/{}/'.format(self.board.pk),
             'url': url,
             'description': 'That\'s an Apple!',
             'origin': None
@@ -91,6 +103,7 @@ class PinResourceTest(ResourceTestCase):
         url = 'http://testserver/mocked/logo.png'
         post_data = {
             'submitter': '/api/v1/user/1/',
+            'board': '/api/v1/board/{}/'.format(self.board.pk),
             'url': url,
             'description': 'That\'s an Apple!',
             'tags': []
@@ -121,6 +134,7 @@ class PinResourceTest(ResourceTestCase):
         url = 'http://testserver/mocked/logo.png'
         post_data = {
             'submitter': '/api/v1/user/1/',
+            'board': '/api/v1/board/{}/'.format(self.board.pk),
             'url': url,
             'description': 'That\'s an Apple!',
             'origin': None
@@ -137,6 +151,7 @@ class PinResourceTest(ResourceTestCase):
         url = origin + 'logo.png'
         post_data = {
             'submitter': '/api/v1/user/1/',
+            'board': '/api/v1/board/{}/'.format(self.board.pk),
             'url': url,
             'description': 'That\'s an Apple!',
             'origin': origin
@@ -151,6 +166,7 @@ class PinResourceTest(ResourceTestCase):
         image = ImageFactory()
         post_data = {
             'submitter': '/api/v1/user/{}/'.format(self.user.pk),
+            'board': '/api/v1/board/{}/'.format(self.board.pk),
             'image': '/api/v1/image/{}/'.format(image.pk),
             'description': 'That\'s something else (probably a CC logo)!',
             'tags': ['random', 'tags'],
@@ -221,6 +237,7 @@ class PinResourceTest(ResourceTestCase):
         self.assertEqual(self.deserialize(response)['objects'][0]['id'], pin.pk)
 
     def test_get_list_json(self):
+        self.maxDiff = None
         image = ImageFactory()
         pin = PinFactory(**{
             'submitter': self.user,
@@ -262,6 +279,7 @@ class PinResourceTest(ResourceTestCase):
             },
             u'url': pin.url,
             u'origin': pin.origin,
+            u'board': '/api/v1/board/{}/'.format(pin.board.pk),
             u'description': pin.description,
             u'tags': [tag.name for tag in pin.tags.all()]
         })

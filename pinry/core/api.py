@@ -6,7 +6,7 @@ from tastypie.exceptions import Unauthorized
 from tastypie.resources import ModelResource
 from django_images.models import Thumbnail
 
-from .models import Pin, Image
+from .models import Pin, Image, Board
 from ..users.models import User
 
 
@@ -39,6 +39,26 @@ class PinryAuthorization(DjangoAuthorization):
             raise Unauthorized("You are not allowed to access that resource.")
 
         return True
+
+
+class BoardResource(ModelResource):
+    def get_resource_uri(self, bundle_or_obj=None,
+                         url_name='api_dispatch_list'):
+        """Return a Resource URI
+
+        This is a terrible hack that I'm going to use until the reason
+        for NoReverseMatch for resources can be found.
+        """
+        if bundle_or_obj:
+            if isinstance(bundle_or_obj, Board):
+                return "/api/v1/board/{}/".format(bundle_or_obj.pk)
+            return "/api/v1/board/{}/".format(bundle_or_obj.obj.pk)
+        return "/api/v1/board/"
+
+    class Meta:
+        queryset = Board.objects.all()
+        fields = ['name', 'description']
+        include_resource_uri = False
 
 
 class UserResource(ModelResource):
@@ -93,6 +113,7 @@ class PinResource(ModelResource):
     submitter = fields.ToOneField(UserResource, 'submitter', full=True)
     image = fields.ToOneField(ImageResource, 'image', full=True)
     tags = fields.ListField()
+    board = fields.ToOneField(BoardResource, 'board')
 
     def hydrate_image(self, bundle):
         url = bundle.data.get('url', None)
