@@ -107,11 +107,15 @@ class PinResource(ModelResource):
         we hydrate the Image resource, creating the Image object in process
         """
         submitter = bundle.data.get('submitter', None)
+        current_user = '/api/v1/user/{}/'.format(bundle.request.user.pk)
         if not submitter:
-            bundle.data['submitter'] = '/api/v1/user/{}/'.format(bundle.request.user.pk)
+            bundle.data['submitter'] = current_user
         else:
-            if not '/api/v1/user/{}/'.format(bundle.request.user.pk) == submitter:
-                raise Unauthorized("You are not authorized to create Pins for other users")
+            # allow superusers to post pins as anybody
+            if not bundle.request.user.is_superuser and \
+                    current_user != submitter:
+                msg = "You are not authorized to create Pins for other users"
+                raise Unauthorized(msg)
         return bundle
 
     def dehydrate_tags(self, bundle):

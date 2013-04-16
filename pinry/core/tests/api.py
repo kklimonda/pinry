@@ -117,6 +117,23 @@ class PinResourceTest(ResourceTestCase):
         self.assertEqual(Image.objects.count(), 0)
 
     @mock.patch('requests.get', mock_requests_get)
+    def test_post_create_url_superuser(self):
+        self.user.is_superuser = True
+        self.user.save()
+        user = UserFactory()
+        url = 'http://testserver/mocked/logo.png'
+        post_data = {
+            'submitter': '/api/v1/user/{}/'.format(user.pk),
+            'url': url,
+            'description': 'That\'s an Apple!',
+            'tags': []
+        }
+        response = self.api_client.post('/api/v1/pin/', data=post_data)
+        self.assertHttpCreated(response)
+        self.assertEqual(Pin.objects.count(), 1)
+        self.assertEqual(Image.objects.count(), 1)
+
+    @mock.patch('requests.get', mock_requests_get)
     def test_post_create_url_with_empty_origin(self):
         url = 'http://testserver/mocked/logo.png'
         post_data = {
